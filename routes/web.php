@@ -1,27 +1,24 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SearchController;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\RegisteredUserController;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+Route::redirect('/', '/register');
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Register new users with the specified vaccination date
+Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
+Route::post('register', [RegisteredUserController::class, 'store']);
+Route::get('confirmation', [RegisteredUserController::class, 'show'])->name('registration.confirmation');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+// Find the user with the specified ID and assign the vaccination date
+Route::get('search', [SearchController::class, 'index'])->name('registration.search');
+Route::post('search', [SearchController::class, 'store']);
 
-require __DIR__.'/auth.php';
+// Additional: list all registered users
+use App\Http\Controllers\VaccinationController;
+
+Route::get('/registrations', [VaccinationController::class, 'index'])->name('registrations.index');
+
+

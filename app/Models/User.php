@@ -3,9 +3,12 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Support\Carbon;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -20,6 +23,8 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'nid',
+        'vaccine_center_id',
         'password',
     ];
 
@@ -45,4 +50,23 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Get the user's associated vaccination schedule.
+     */
+    public function vaccinationSchedule(): HasOne
+    {
+        return $this->hasOne(VaccinationSchedule::class);
+    }
+
+    /**
+     * Get the vaccine center associated with the User
+     *
+     * @return BelongsTo
+     */
+    public function vaccineCenter(): BelongsTo
+    {
+        return $this->belongsTo(VaccineCenter::class);
+    }
+
 }
