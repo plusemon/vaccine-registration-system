@@ -51,7 +51,13 @@ class SearchController extends Controller
         }
 
         return Inertia::render('Search', [
-            'status' => $status
+            'user' => [
+                'name' => $user?->name,
+                'nid' => $user?->nid,
+                'vaccine_center_name' => $user?->vaccineCenter?->name,
+                'vaccine_status' => $user?->vaccinationSchedule?->status,
+            ],
+            'status' => $status,
         ]);
 
     }

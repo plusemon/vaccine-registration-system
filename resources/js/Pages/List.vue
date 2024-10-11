@@ -1,8 +1,8 @@
 <script setup>
 import { Link, Head } from '@inertiajs/vue3'
+import LinkButton from '@/Components/LinkButton.vue'
 import moment from 'moment'
-import { ref } from 'vue'
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 
 const props = defineProps({
     users: Object
@@ -47,8 +47,8 @@ const getStatus = (user) => {
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-2xl font-bold">All Vaccination Registrations</h1>
             <div class="flex gap-4">
-                <Link href="/search" class="text-blue-500 hover:underline">Search</Link>
-                <Link href="/register" class="text-blue-500 hover:underline">Register</Link>
+                <LinkButton href="/search" text="Search" />
+                <LinkButton href="/register" text="Register" />
             </div>
         </div>
 
