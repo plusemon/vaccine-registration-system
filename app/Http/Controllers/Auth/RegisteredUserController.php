@@ -27,7 +27,7 @@ class RegisteredUserController extends Controller
     {
         $vaccineCenters = VaccineCenter::all();
         return Inertia::render(
-            'Auth/Register',
+            'Register',
             compact('vaccineCenters')
         );
     }

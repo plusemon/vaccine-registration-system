@@ -53,18 +53,18 @@ const getStatus = (user) => {
         </div>
 
         <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm mb-2" v-model="search"
-            placeholder="Search by name, NID or center">
+            placeholder="Search by name, NID or center (this search will find in this page contents only at this moment)">
 
         <table class="min-w-full bg-white border border-gray-300 rounded-lg shadow">
             <thead>
                 <tr class="bg-gray-200">
-                    <th class="py-2 px-4 border-b">#</th>
-                    <th class="py-2 px-4 border-b">Name</th>
-                    <th class="py-2 px-4 border-b">NID</th>
-                    <th class="py-2 px-4 border-b">Center Name</th>
-                    <th class="py-2 px-4 border-b">Register Date</th>
-                    <th class="py-2 px-4 border-b">Scheduled Date</th>
-                    <th class="py-2 px-4 border-b">Status</th>
+                    <th class="py-2 px-4 border-b !text-start">#</th>
+                    <th class="py-2 px-4 border-b !text-start">Name</th>
+                    <th class="py-2 px-4 border-b !text-start">NID</th>
+                    <th class="py-2 px-4 border-b !text-start">Center Name</th>
+                    <th class="py-2 px-4 border-b !text-start">Register Date</th>
+                    <th class="py-2 px-4 border-b !text-start">Scheduled Date</th>
+                    <th class="py-2 px-4 border-b !text-start">Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -83,7 +83,7 @@ const getStatus = (user) => {
                     </td>
                 </tr>
                 <tr v-if="filteredRegistrations.length === 0">
-                    <td colspan="6">
+                    <td class="py-2 px-4 border-b" colspan="6">
                         <p v-if="search" class="text-center">
                             No results found for <b>"{{ search }}"</b>
                         </p>

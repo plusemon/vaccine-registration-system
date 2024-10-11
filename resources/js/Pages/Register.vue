@@ -29,7 +29,7 @@ const submit = () => {
 <template>
     <GuestLayout>
 
-        <Head title="Register" />
+        <Head title="Vaccine Registration" />
 
         <h1 class="text-xl font-bold text-gray-600 text-center mb-6 border-b border-gray-300 pb-2">Vaccine Registration
             Form
