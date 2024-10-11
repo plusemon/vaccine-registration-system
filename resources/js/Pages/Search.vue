@@ -47,8 +47,7 @@ const submit = () => {
             <form v-else @submit.prevent="submit">
                 <div class="mb-4">
                     <label for="nid" class="block text-sm font-medium text-gray-700">National ID</label>
-                    <input type="number" id="nid" v-model="form.nid"
-                        placeholder="Example: 1234567890123 (10 to 17 digits)"
+                    <input type="number" id="nid" v-model="form.nid" placeholder="Ex: 1234567890123 (10 to 17 digits)"
                         class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                     <InputError class="mt-2" :message="form.errors.nid" />
                 </div>

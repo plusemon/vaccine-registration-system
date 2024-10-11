@@ -41,7 +41,7 @@ const submit = () => {
                     <InputLabel for="name" value="Full Name" :required="true" />
 
                     <TextInput id="name" type="text" class="mt-1 block w-full" v-model="form.name" autofocus
-                        autocomplete="name" placeholder="Example: John Doe" />
+                        autocomplete="name" placeholder="Ex: John Doe" />
 
                     <InputError class="mt-2" :message="form.errors.name" />
                 </div>
@@ -50,7 +50,7 @@ const submit = () => {
                     <InputLabel for="email" value="Email" :required="true" />
 
                     <TextInput id="email" type="text" class="mt-1 block w-full" v-model="form.email"
-                        autocomplete="email" placeholder="Example: john@example.com" />
+                        autocomplete="email" placeholder="Ex: john@example.com" />
 
                     <InputError class="mt-2" :message="form.errors.email" />
                 </div>
@@ -59,7 +59,7 @@ const submit = () => {
                     <InputLabel for="nid" value="National ID (NID)" :required="true" />
 
                     <TextInput id="nid" type="number" class="mt-1 block w-full" v-model="form.nid" autocomplete="nid"
-                        placeholder="Example: 123456789012345 (10 to 17 digit)" />
+                        placeholder="Ex: 123456789012345 (10 to 17 digit)" />
 
                     <InputError class=" mt-2" :message="form.errors.nid" />
                 </div>
@@ -72,8 +72,8 @@ const submit = () => {
                         <option v-for="vaccineCenter in vaccineCenters" :key="vaccineCenter.id"
                             :value="vaccineCenter.id">{{ vaccineCenter.name }}</option>
                     </SelectField>
-                    <div class=" text-gray-600 text-sm mt-1">
-                        The Vaccination Center will be notified of your registration.
+                    <div v-if="!form.errors.vaccine_center_id" class=" text-gray-600 text-sm mt-1">
+                        The place where you will be vaccinated.
                     </div>
                     <InputError class="mt-2" :message="form.errors.vaccine_center_id" />
                 </div>
@@ -82,7 +82,7 @@ const submit = () => {
 
             <div class="mt-4 flex items-center justify-end">
                 <PrimaryButton :disabled="form.processing">
-                    <span v-if="form.processing">Registering</span>
+                    <span v-if="form.processing">Registering...</span>
                     <span v-else>Register</span>
                 </PrimaryButton>
             </div>
