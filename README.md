@@ -1,27 +1,14 @@
-### Key Sections:
-
-1. **Project Overview**: Describes the purpose and features of the system.
-2. **Prerequisites**: Lists all necessary dependencies and tools.
-3. **Installation Guide**: Provides a step-by-step guide for setting up the application.
-4. **Usage**: Explains the registration and search functionalities.
-5. **Cron Job Setup**: Ensures notifications are scheduled correctly.
-6. **Future Enhancements**: Notes possible SMS notification integration.
-7. **Optimizations**: Suggests ways to optimize the app for better performance.
-8. **License**: Instructions for running tests and project licensing.
-
-This structure should guide users on how to install, configure, and use your vaccination registration system.
-
-# Project Overview
-
-A web-based vaccination registration system built with **Laravel 11**, **Vue.js**, **Inertia.js**, and **Tailwind CSS**. This system allows users to register for vaccination, schedule vaccination dates, and view their registration status. Admins can view all registrations with pagination.
+## Covid Vaccine Registration System
+A web-based vaccination registration system built with **Laravel 11**, **Vue.js**, **Inertia.js**, and **Tailwind CSS**.
+This system allows users to register for vaccination, schedule vaccination dates, and view their registration status. A List Page for view all registrations with pagination.
 
 ## Features
 
-- User registration with NID and vaccine center selection
+- User registration with `NID` and `vaccine center` selection
 - Vaccination date scheduling based on center capacity and `first come first serve` rule
 - Email notifications sent one day prior to the scheduled vaccination date
 - Users can check their registration status using their NID
-- Admin view for all registrations with pagination
+- A List Page for view all registrations in a single page with pagination
 
 ## Prerequisites
 
@@ -30,51 +17,53 @@ Ensure you have the following installed on your machine:
 - PHP 8.1+
 - Composer
 - Node.js & NPM
-- MySQL (or any supported database)
+- SqLite, MySQL (or any supported database)
 - Laravel 11
 - A working mail configuration (e.g., Mailtrap or SMTP setup)
 
 ## Installation Guide
 
 ### 1. Clone the Repository
+Clone this project from GitHub:
 ```bash
-git clone https://github.com/your-username/vaccination-registration-system.git
+git clone https://github.com/plusemon/vaccine-registration-system.git
 ```
+Change directory to the project folder.
 ```bash
-cd vaccination-registration-system
+cd vaccine-registration-system
 ```
+
 ### 2. Install PHP Dependencies
 Install the necessary PHP dependencies using Composer:
 ```bash
 composer install
 ```
+
 ### 3. Install JavaScript Dependencies
 Use NPM to install frontend dependencies:
 ```bash
 npm install
 ```
 
-```bash
-npm run build
-```
 
 ### 4. Environment Setup
-Copy the .env.example file to create your .env file:
+Copy the `.env.example` file to create your `.env` file:
 ```bash
 cp .env.example .env
 ```
+
 ### 5. Configure Environment Variables
-Update the following details in the .env file:
+Update the following details in the `.env` file:
 ```env
 APP_NAME="Vaccination Registration System"
 APP_URL=http://localhost
 
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=vaccine_db
-DB_USERNAME=root
-DB_PASSWORD=your_db_password
+DB_CONNECTION=sqlite
+# DB_HOST=127.0.0.1
+# DB_PORT=3306
+# DB_DATABASE=vaccine_db
+# DB_USERNAME=root
+# DB_PASSWORD=your_db_password
 
 MAIL_MAILER=smtp
 MAIL_HOST=smtp.mailtrap.io
@@ -85,11 +74,12 @@ MAIL_ENCRYPTION=tls
 MAIL_FROM_ADDRESS="no-reply@vaccination.com"
 MAIL_FROM_NAME="Vaccination System"
 ```
-### 6. Run Migrations with Seed(10 Vaccine Center) Database
+### 6. Run Migrations with seed database (10 Vaccine Center included)
 ```base
 php artisan migrate --seed
 ```
-Note: For seeded Vaccine Center will sufix with the limit of daily capacity like "Vaccine Center 5" will take 5 schedule in a day.
+It will migrate the database and seed 10 vaccine Center with Name `Vaccine Center [1-10]`
+Note: For seeded `Vaccine Center` will sufix with the limit of daily capacity. like `Vaccine Center 5` will capable to take `5` schedules in a working day.
 
 ### 7. Generate Application Key
 Generate an application key to secure the application:
@@ -102,7 +92,7 @@ Compile the frontend assets with Vite:
 ```base
 npm run build
 ```
-Alternatively, for development mode with hot-reloading:
+Alternatively, for development mode with hot-reloading run:
 ```base
 npm run dev
 ```
@@ -134,13 +124,13 @@ Users can check their vaccination status by entering their NID on the /search pa
 - Vaccinated: If the vaccination date has passed, the system assumes the user is vaccinated.
 
 #### View All Registrations
-You can view all registered users with pagination by visiting the /registrations page. The page displays users' NIDs, vaccination status, and scheduled dates.
+To view all registered users with pagination by visiting the `baseUrl/registrations` page. The page displays user's NIDs, vaccination status, and scheduled dates.
 
 ### Additional Notes
 #### Optimizations for Large User Base
 To handle a large number of users efficiently:
 
-- Database Indexing: Add proper indexing on frequently searched columns such as nid and scheduled_date.
+- Database Indexing: Add proper indexing on frequently searched columns such as `nid`.
 - Caching: Implement caching for common database queries (e.g., center limits, user status).
 - Queueing: Use Laravel queues to handle bulk email notifications efficiently.
 
