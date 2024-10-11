@@ -27,14 +27,16 @@ const submit = () => {
             <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Check Vaccination Status</h2>
 
             <div v-if="showResult" class="mt-6 text-center">
+
                 <p class="text-white rounded-lg px-4 py-2" :class="{
                     'bg-green-500': status === 'Registered',
                     'bg-red-500': status === 'Not Registered',
                     'bg-yellow-500': status === 'Not Scheduled',
                     'bg-blue-500': status === 'Scheduled',
                 }">{{ status }}</p>
+
                 <div class="mt-4" v-if="status === 'Not Registered'">
-                    <a href="/register" class="text-blue-500 hover:underline ">
+                    <a href="/register" class="text-blue-500 hover:underline">
                         Click here to register</a>
                 </div>
                 <div>
@@ -44,9 +46,9 @@ const submit = () => {
 
             <form v-else @submit.prevent="submit">
                 <div class="mb-4">
-                    <label for="nid" class="block text-sm font-medium text-gray-700">Enter Your NID</label>
+                    <label for="nid" class="block text-sm font-medium text-gray-700">National ID</label>
                     <input type="number" id="nid" v-model="form.nid"
-                        placeholder="Enter your 13 or 17 digit National Id (NID)"
+                        placeholder="Example: 1234567890123 (10 to 17 digits)"
                         class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                     <InputError class="mt-2" :message="form.errors.nid" />
                 </div>

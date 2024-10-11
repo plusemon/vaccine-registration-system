@@ -16,16 +16,18 @@ class SearchController extends Controller
 
     public function store(Request $request)
     {
-        // Validate the input NID
         $request->validate([
-            'nid' => 'required|numeric|min:13,max:17,exists:users,nid',
+            'nid' => ['required', 'numeric', 'digits_between:10,17'],
+        ], [
+            'nid' => 'Enter your national ID (10 to 17 digits)',
         ]);
 
-        // Retrieve user based on the NID
-        $user = User::where('nid', $request->nid)->with('vaccinationSchedule:id,user_id,vaccination_date')->first();
+        $user = User::query()
+            ->with('vaccinationSchedule:id,user_id,vaccination_date')
+            ->where('nid', $request->nid)
+            ->first();
 
         $status = null;
-
         $scheduleDate = $user?->vaccinationSchedule?->vaccination_date;
 
         // Case 1: User not registered
