@@ -15,7 +15,7 @@ class VaccinationController extends Controller
                 'vaccinationSchedule:id,user_id,vaccination_date',
                 'vaccineCenter:id,name'
             ])
-            ->paginate(5);
+            ->paginate(100);
 
         return Inertia::render(
             'List',

@@ -15,7 +15,8 @@ class VaccineCenterSeeder extends Seeder
     {
         // \App\Models\VaccineCenter::factory(10)->create();
 
-        for ($i = 0; $i < 10; $i++) {
+        // create 10 vaccine centers with 1-10 daily capacity
+        for ($i = 1; $i <= 10; $i++) {
             VaccineCenter::create([
                 'name' => "Vaccine Center $i",
                 'daily_limit' => $i,
