@@ -68,8 +68,9 @@ class User extends Authenticatable
     {
         return new Attribute(
             get: function () {
+
                 if (is_null($this->scheduled_at)) {
-                    return 'Not registered';
+                    return 'Not Scheduled';
                 }
 
                 if ($this->scheduled_at->isPast()) {

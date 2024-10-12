@@ -1,13 +1,21 @@
 <?php
 
 use App\Models\User;
+use App\Services\VaccineSchedulerService;
+use Database\Factories\VaccineCenterFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia;
 
 uses(RefreshDatabase::class);
 
 beforeEach(function () {
-    $this->postData = User::factory()->create()->toArray();
+    $this->postData = [
+        'nid' => '12345678900000',
+        'name' => 'John Doe',
+        'email' => 'abc@example.com',
+        'vaccine_center_id' => VaccineCenterFactory::new()->create()->id,
+    ];
+
 });
 
 it('displays the registration view with available vaccine centers', function () {
@@ -33,6 +41,8 @@ it('successfully registers a user and assigns a vaccination date', function () {
         'name' => $this->postData['name'],
         'email' => $this->postData['email'],
     ]);
+
+    $response->assertSessionHasNoErrors();
 
 });
 

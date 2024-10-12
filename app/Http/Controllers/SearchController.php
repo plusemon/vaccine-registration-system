@@ -31,7 +31,7 @@ class SearchController extends Controller
                 'nid' => $user?->nid,
                 'vaccine_center_name' => $user?->vaccineCenter?->name,
                 'status' => $user?->status ?? 'Not Registered',
-                'scheduled_at' => $user?->scheduled_at->format('D, d M Y h:i A'),
+                'scheduled_at' => $user?->scheduled_at?->format('D, d M Y h:i A'),
             ]
         ]);
 
