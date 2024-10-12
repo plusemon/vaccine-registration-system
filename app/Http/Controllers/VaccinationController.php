@@ -11,10 +11,7 @@ class VaccinationController extends Controller
     public function index()
     {
         $users = User::query()
-            ->with([
-                'vaccinationSchedule:id,user_id,vaccination_date',
-                'vaccineCenter:id,name'
-            ])
+            ->with(['vaccineCenter:id,name'])
             ->paginate(100);
 
         return Inertia::render(

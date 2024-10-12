@@ -20,8 +20,8 @@ return new class extends Migration {
 
             $table->string('password');
 
-            $table->timestamp('registration_date')->useCurrent();
             $table->foreignIdFor(VaccineCenter::class, 'vaccine_center_id')->constrained()->cascadeOnDelete();
+            $table->timestamp('scheduled_at')->nullable();
 
             $table->rememberToken();
             $table->timestamps();

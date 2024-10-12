@@ -27,16 +27,6 @@ const filteredRegistrations = computed(() => {
     })
 })
 
-const getScheduledDate = (user) => {
-    if (!user.vaccination_schedule?.vaccination_date) 'N/A'
-    return moment(user.vaccination_schedule?.vaccination_date).format('Do MMM, YYYY')
-}
-
-const getStatus = (user) => {
-    if (!user.vaccination_schedule?.vaccination_date) 'Not scheduled'
-    return moment(user.vaccination_schedule?.vaccination_date).isAfter() ?
-        'Scheduled' : 'Vaccinated'
-}
 
 </script>
 
@@ -47,7 +37,7 @@ const getStatus = (user) => {
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-2xl font-bold">All Vaccination Registrations</h1>
             <div class="flex gap-4">
-                <LinkButton href="/search" text="Search" />
+                <LinkButton href="/search" text="Check Status" />
                 <LinkButton href="/register" text="Register" />
             </div>
         </div>
@@ -60,10 +50,11 @@ const getStatus = (user) => {
                 <tr class="bg-gray-200">
                     <th class="py-2 px-4 border-b !text-start">#</th>
                     <th class="py-2 px-4 border-b !text-start">Name</th>
+                    <th class="py-2 px-4 border-b !text-start">Email</th>
                     <th class="py-2 px-4 border-b !text-start">NID</th>
                     <th class="py-2 px-4 border-b !text-start">Center Name</th>
-                    <th class="py-2 px-4 border-b !text-start">Register Date</th>
-                    <th class="py-2 px-4 border-b !text-start">Scheduled Date</th>
+                    <th class="py-2 px-4 border-b !text-start">Registered</th>
+                    <th class="py-2 px-4 border-b !text-start">Scheduled At</th>
                     <th class="py-2 px-4 border-b !text-start">Status</th>
                 </tr>
             </thead>
@@ -71,14 +62,15 @@ const getStatus = (user) => {
                 <tr v-for="user in filteredRegistrations" :key="user.id">
                     <td class="py-2 px-4 border-b">{{ user.id }}</td>
                     <td class="py-2 px-4 border-b">{{ user.name }}</td>
+                    <td class="py-2 px-4 border-b">{{ user.email }}</td>
                     <td class="py-2 px-4 border-b">{{ user.nid }}</td>
                     <td class="py-2 px-4 border-b">{{ user.vaccine_center?.name ?? 'N/A' }}</td>
                     <td class="py-2 px-4 border-b">{{ moment(user.created_at).fromNow() }}</td>
-                    <td class="py-2 px-4 border-b">{{ getScheduledDate(user) }} </td>
+                    <td class="py-2 px-4 border-b">{{ moment(user.scheduled_at).format('Do MMM, YYYY h:mm A') }} </td>
                     <td class="py-2 px-4 border-b">
-                        <span :class="[getStatus(user) === 'Scheduled' ? 'bg-blue-500' : 'bg-green-500']"
+                        <span :class="[user.status === 'Scheduled' ? 'bg-blue-500' : 'bg-green-500']"
                             class="px-2 py-1 rounded-lg text-white text-sm lowercase">
-                            {{ getStatus(user) }}
+                            {{ user.status }}
                         </span>
                     </td>
                 </tr>

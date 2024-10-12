@@ -93,7 +93,7 @@ const submit = () => {
         </div>
 
         <div class="flex justify-between items-center mt-4 w-full max-w-md">
-            <LinkButton href="/search" text="Search" />
+            <LinkButton href="/search" text="Check Status" />
             <LinkButton href="/registrations" text="View All" />
         </div>
     </GuestLayout>

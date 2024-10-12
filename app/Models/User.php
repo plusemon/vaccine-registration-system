@@ -3,9 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -24,8 +23,9 @@ class User extends Authenticatable
         'name',
         'email',
         'nid',
-        'vaccine_center_id',
         'password',
+        'scheduled_at',
+        'vaccine_center_id',
     ];
 
     /**
@@ -47,17 +47,12 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
+            'scheduled_at' => 'datetime',
             'password' => 'hashed',
         ];
     }
 
-    /**
-     * Get the user's associated vaccination schedule.
-     */
-    public function vaccinationSchedule(): HasOne
-    {
-        return $this->hasOne(VaccinationSchedule::class);
-    }
+    protected $appends = ['status'];
 
     /**
      * Get the vaccine center associated with the User
@@ -67,6 +62,23 @@ class User extends Authenticatable
     public function vaccineCenter(): BelongsTo
     {
         return $this->belongsTo(VaccineCenter::class);
+    }
+
+    public function status(): Attribute
+    {
+        return new Attribute(
+            get: function () {
+                if (is_null($this->scheduled_at)) {
+                    return 'Not registered';
+                }
+
+                if ($this->scheduled_at->isPast()) {
+                    return 'Vaccinated';
+                }
+
+                return 'Scheduled';
+            }
+        );
     }
 
 }

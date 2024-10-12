@@ -2,25 +2,23 @@
 
 namespace App\Notifications;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
+use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
 
 class RegistrationSuccessful extends Notification
 {
     use Queueable;
 
-    protected $scheduleDate;
-    protected $vaccineCenter;
+
 
     /**
      * Create a new notification instance.
      */
-    public function __construct($scheduleDate, $vaccineCenter)
+    public function __construct(public User $user)
     {
-        $this->scheduleDate = $scheduleDate;
-        $this->vaccineCenter = $vaccineCenter;
     }
 
     /**
@@ -42,8 +40,8 @@ class RegistrationSuccessful extends Notification
             ->subject('Vaccination Registration Successful')
             ->greeting("Hello {$notifiable->name},")
             ->line('Thank you for registering for vaccination.')
-            ->line('Your vaccination is scheduled on ' . $this->scheduleDate->toFormattedDateString() . '.')
-            ->line("Vaccine Center: {$this->vaccineCenter}")
+            ->line('Your vaccination is scheduled on ' . $this->user->scheduled_at->format('D, d M Y h:i A') . '.')
+            ->line("Vaccine Center: {$this->user->vaccineCenter->name}.")
             ->line('Please arrive 15 minutes before your scheduled time.')
             ->salutation('Stay Safe!');
     }

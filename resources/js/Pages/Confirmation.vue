@@ -39,11 +39,11 @@ defineProps({
                     </div>
                     <div class="flex justify-between">
                         <span class="font-semibold text-gray-600">Vaccine Center:</span>
-                        <span class="text-gray-800">{{ user.vaccine_center }}</span>
+                        <span class="text-gray-800">{{ user.vaccine_center_name }}</span>
                     </div>
                     <div class="flex justify-between">
-                        <span class="font-semibold text-gray-600">Vaccination Date:</span>
-                        <span class="text-gray-800">{{ user.vaccination_date }}</span>
+                        <span class="font-semibold text-gray-600">Scheduled Date:</span>
+                        <span class="text-gray-800">{{ user.scheduled_at }}</span>
                     </div>
                 </div>
             </div>

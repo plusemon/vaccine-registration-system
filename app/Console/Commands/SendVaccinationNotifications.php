@@ -2,11 +2,11 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use App\Models\VaccinationSchedule;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Mail;
+use App\Models\User;
+use Illuminate\Console\Command;
 use App\Mail\VaccinationReminder;
+use Illuminate\Support\Facades\Mail;
 
 class SendVaccinationNotifications extends Command
 {
@@ -25,16 +25,14 @@ class SendVaccinationNotifications extends Command
      */
     public function handle()
     {
-        $targetDate = Carbon::now()->addDays(2)->startOfDay(); // 9 PM today for vaccination tomorrow
-        $schedules = VaccinationSchedule::query()
-            ->with('user')
-            ->where('vaccination_date', $targetDate)
+        $targetDate = Carbon::now()->addDay(); // 9 PM today for vaccination tomorrow
+        $schedules = User::query()
+            ->whereDate('vaccination_date', $targetDate)
             ->get();
 
-        foreach ($schedules as $schedule) {
-            $user = $schedule->user;
+        foreach ($schedules as $user) {
             if ($user->email) {
-                Mail::to($user->email)->send(new VaccinationReminder($user, $schedule->vaccination_date));
+                Mail::to($user->email)->send(new VaccinationReminder($user));
             }
         }
 

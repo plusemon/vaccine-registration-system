@@ -2,7 +2,7 @@
 # Hello {{ $user->name }},
 
 This is a friendly reminder that your vaccination is scheduled on
-**{{ \Carbon\Carbon::parse($vaccinationDate)->toFormattedDateString() }}** at **{{ $user->vaccineCenter->name }}**.
+**{{ \Carbon\Carbon::parse($user->scheduled_at)->format('D, d M Y h:i A') }}** at **{{ $user->vaccineCenter->name }}**.
 
 Please arrive **15 minutes before** your scheduled time.
 

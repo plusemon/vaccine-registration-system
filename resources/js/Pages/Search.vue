@@ -4,9 +4,9 @@ import LinkButton from '@/Components/LinkButton.vue'
 import { Link, useForm, Head } from '@inertiajs/vue3'
 import { ref } from 'vue'
 
-const props = defineProps(['status', 'user'])
+const props = defineProps(['user'])
 
-const showResult = ref(props.status)
+const showResult = ref(props.user?.status)
 
 const form = useForm({
     nid: '',
@@ -50,18 +50,23 @@ const submit = () => {
                             <td>:</td>
                             <td>
                                 <span class="text-white rounded-lg px-3 py-1" :class="{
-                                    'bg-green-500': status === 'Registered',
-                                    'bg-red-500': status === 'Not Registered',
-                                    'bg-yellow-500': status === 'Not Scheduled',
-                                    'bg-blue-500': status === 'Scheduled',
-                                }">{{ status }}</span>
+                                    'bg-green-500': user.status == 'Registered',
+                                    'bg-red-500': user.status == 'Not Registered',
+                                    'bg-yellow-500': user.status == 'Not Scheduled',
+                                    'bg-blue-500': user.status == 'Scheduled',
+                                }">{{ user.status }}</span>
                             </td>
+                        </tr>
+                        <tr v-if="user.scheduled_at">
+                            <td>Scheduled</td>
+                            <td>:</td>
+                            <td> {{ user.scheduled_at }}</td>
                         </tr>
                     </table>
                 </div>
 
                 <div class="text-center">
-                    <div class="mt-4" v-if="status === 'Not Registered'">
+                    <div class="mt-4" v-if="user.status == 'Not Registered'">
                         <a href="/register" class="text-blue-500 hover:underline">
                             Click here to register</a>
                     </div>

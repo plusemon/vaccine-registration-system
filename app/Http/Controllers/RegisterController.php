@@ -8,9 +8,9 @@ use Inertia\Response;
 use Illuminate\Http\Request;
 use App\Models\VaccineCenter;
 use Illuminate\Support\Facades\DB;
-use App\Models\VaccinationSchedule;
 use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\Controller;
+use App\Services\VaccineSchedulerService;
 use App\Notifications\RegistrationSuccessful;
 use App\Http\Requests\RegisterUserStoreRequest;
 
@@ -36,7 +36,7 @@ class RegisterController extends Controller
     /**
      * Handle user registration for vaccination.
      */
-    public function store(RegisterUserStoreRequest $request)
+    public function store(RegisterUserStoreRequest $request, VaccineSchedulerService $schedulerService)
     {
         DB::beginTransaction();
 
@@ -46,22 +46,14 @@ class RegisterController extends Controller
                 'email' => $request->email,
                 'nid' => $request->nid,
                 'vaccine_center_id' => $request->vaccine_center_id,
-                'registration_date' => now(),
                 'password' => 'password',
             ]);
 
-            // Assign vaccination schedule
-            // Logic to assign the first available date based on center's daily limit and first come first serve
-            $scheduleDate = $this->assignAvailableVaccinationDate($user->vaccine_center_id);
-
-            VaccinationSchedule::create([
-                'user_id' => $user->id,
-                'vaccination_date' => $scheduleDate,
-                'status' => 'Scheduled',
-            ]);
+            // Schedule vaccination for the user
+            $schedulerService->scheduleUser($user);
 
             // Send registration successful notification
-            $user->notify(new RegistrationSuccessful($scheduleDate, $user->vaccineCenter->name));
+            $user->notify(new RegistrationSuccessful($user));
 
             DB::commit();
             return redirect(URL::signedRoute('registration.confirmation', ['tracker' => $user->id]));
@@ -79,49 +71,16 @@ class RegisterController extends Controller
     public function show(Request $request): Response
     {
         $userId = $request->input('tracker');
-        $user = User::with(['vaccinationSchedule', 'vaccineCenter'])->findOrFail($userId);
+        $user = User::with(['vaccineCenter'])->findOrFail($userId);
 
         return Inertia::render('Confirmation', [
             'user' => [
                 'name' => $user->name,
                 'email' => $user->email,
                 'nid' => $user->nid,
-                'vaccine_center' => $user->vaccineCenter->name,
-                'vaccination_date' => $user->vaccinationSchedule->vaccination_date->toFormattedDateString(),
+                'vaccine_center_name' => $user->vaccineCenter->name,
+                'scheduled_at' => $user->scheduled_at->format('D, d M Y h:i A'),
             ],
         ]);
-    }
-
-
-    /**
-     * Assign the first available vaccination date based on center capacity.
-     */
-    private function assignAvailableVaccinationDate($vaccineCenterId)
-    {
-        $currentDate = today();
-        while (true) {
-            // Skip weekends (Friday and Saturday)
-            if (in_array($currentDate->dayOfWeek, [5, 6])) { // 5: Friday, 6: Saturday
-                $currentDate->addDay();
-                continue;
-            }
-
-            // Count scheduled users for the center on the current date
-            $scheduledCount = VaccinationSchedule::whereHas('user', function ($query) use ($vaccineCenterId) {
-                $query->where('vaccine_center_id', $vaccineCenterId);
-            })
-                ->whereDate('vaccination_date', $currentDate)
-                ->count();
-
-            // Get the center's daily limit
-            $dailyLimit = VaccineCenter::find($vaccineCenterId)->daily_limit;
-
-            if ($scheduledCount < $dailyLimit) {
-                return $currentDate;
-            }
-
-            // Move to the next day if the limit is reached
-            $currentDate->addDay();
-        }
     }
 }

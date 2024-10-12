@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -10,16 +11,11 @@ class VaccinationReminder extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $user;
-    public $vaccinationDate;
-
     /**
      * Create a new message instance.
      */
-    public function __construct($user, $vaccinationDate)
+    public function __construct(public User $user)
     {
-        $this->user = $user;
-        $this->vaccinationDate = $vaccinationDate;
     }
 
     /**
