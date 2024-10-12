@@ -32,7 +32,7 @@ const filteredRegistrations = computed(() => {
 
 <template>
 
-    <Head title="List of Vaccination Registrations" />
+    <Head title="Vaccine Registrations" />
     <div class="container mx-auto p-4">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-2xl font-bold">All Vaccination Registrations</h1>

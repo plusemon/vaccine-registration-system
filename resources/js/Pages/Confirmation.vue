@@ -10,7 +10,7 @@ defineProps({
 </script>
 <template>
 
-    <Head title="Registration Successful"></Head>
+    <Head title="Registration Confirmation"></Head>
     <div class="min-h-screen flex items-center justify-center bg-gray-100 p-4">
         <div class="bg-white shadow-md rounded-lg p-6 max-w-lg w-full">
             <div class="text-center mb-6">
